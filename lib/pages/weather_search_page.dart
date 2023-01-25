@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_search_bloc/repository/weather_repository.dart';
 
 class WeatherSearchPage extends StatefulWidget {
   const WeatherSearchPage({super.key});
@@ -68,7 +69,9 @@ class CityInputField extends StatelessWidget {
     );
   }
 
-  void _search(BuildContext context, String city) {
-    // TODO
+  void _search(BuildContext context, String city) async {
+    WeatherRepository weatherRepository = FakeWeatherRepository();
+    final result = await weatherRepository.fetchWeather(city);
+    print(result);
   }
 }
