@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather_search_bloc/cubit/weather_cubit.dart';
+import 'package:weather_search_bloc/bloc/weather_bloc.dart';
+// import 'package:weather_search_bloc/cubit/weather_cubit.dart';
 import 'package:weather_search_bloc/model/weather.dart';
 import 'package:weather_search_bloc/repository/weather_repository.dart';
 
@@ -15,7 +16,8 @@ class _WeatherSearchPageState extends State<WeatherSearchPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => WeatherCubit(FakeWeatherRepository()),
+      create: (_) => WeatherBloc(FakeWeatherRepository()),
+      // create: (_) => WeatherCubit(FakeWeatherRepository()),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -25,7 +27,8 @@ class _WeatherSearchPageState extends State<WeatherSearchPage> {
           child: Container(
               padding: const EdgeInsets.symmetric(vertical: 16),
               alignment: Alignment.center,
-              child: BlocConsumer<WeatherCubit, WeatherState>(
+              child: BlocConsumer<WeatherBloc, WeatherState>(
+                // child: BlocConsumer<WeatherCubit, WeatherState>(
                 listener: (context, state) {
                   if (state is WeatherError) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -108,8 +111,13 @@ class CityInputField extends StatelessWidget {
     );
   }
 
+  // void _search(BuildContext context, String city) {
+  //   final weatherCubit = context.read<WeatherCubit>();
+  //   weatherCubit.fetchWeather(city);
+  // }
+
   void _search(BuildContext context, String city) {
-    final weatherCubit = context.read<WeatherCubit>();
-    weatherCubit.fetchWeather(city);
+    final weatherBloc = context.read<WeatherBloc>();
+    weatherBloc.add(FetchWeather(city));
   }
 }
